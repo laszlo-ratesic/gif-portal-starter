@@ -8,6 +8,10 @@ import kp from './keypair.json'
 
 import { set } from "@project-serum/anchor/dist/cjs/utils/features";
 
+// Constants
+const TWITTER_HANDLE = "laszlo_ratesic";
+const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
+
 // SystemProgram is a reference to the Solana runtime
 const { SystemProgram, Keypair } = web3;
 
@@ -27,16 +31,6 @@ const opts = {
   preflightCommitment: "processed",
 };
 
-// Constants
-const TWITTER_HANDLE = "laszlo_ratesic";
-const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
-const TEST_GIFS = [
-  "https://media.giphy.com/media/dZCa79nBsVDU1sWwbm/giphy.gif",
-  "https://media.giphy.com/media/OAYtfrwCvdVjW/giphy.gif",
-  "https://media.giphy.com/media/5HRvXqKEVrZEA/giphy.gif",
-  "https://media.giphy.com/media/26gsspfbt1HfVQ9va/giphy.gif",
-  "https://media.giphy.com/media/KPgOYtIRnFOOk/giphy.gif",
-];
 
 const App = () => {
   //State
@@ -191,7 +185,8 @@ const App = () => {
           <div className="gif-grid">
             {gifList.map((item, index) => (
               <div className="gif-item" key={index}>
-                <img src={item.gifLink} />
+                <img src={item.gifLink} alt="Gorilla GIF"/>
+                <p>Submitted by: {item.userAddress.toString()}</p>
               </div>
             ))}
           </div>
@@ -237,7 +232,7 @@ const App = () => {
     <div className="App">
       <div className={walletAddress ? "authed-container" : "container"}>
         <div className="header-container">
-          <p className="header">Koko's Guerilla Art GIF Portal</p>
+          <p className="header"><span className="emoji">🦍</span> Koko's Guerilla Art GIF Portal</p>
           <p className="sub-text">
             View the world's pre-eminent geurilla art GIFs straight from the
             metaverse ✨

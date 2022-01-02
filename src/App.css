@@ -27,6 +27,10 @@
   color: white;
 }
 
+.emoji {
+  font-weight: lighter;
+}
+
 .sub-text {
   font-size: 25px;
   color: white;
@@ -109,6 +113,12 @@
   height: 300px;
   border-radius: 10px;
   object-fit: cover;
+}
+
+.gif-item p {
+  font-weight: bold;
+  font-size: 18px;
+  color: white;
 }
 
 .connected-container input[type='text'] {
