@@ -1,21 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import twitterLogo from './assets/twitter-logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import twitterLogo from "./assets/twitter-logo.svg";
+import "./App.css";
+import { set } from "@project-serum/anchor/dist/cjs/utils/features";
 
 // Constants
-const TWITTER_HANDLE = 'laszlo_ratesic';
+const TWITTER_HANDLE = "laszlo_ratesic";
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 const TEST_GIFS = [
-  'https://media.giphy.com/media/dZCa79nBsVDU1sWwbm/giphy.gif',
-  'https://media.giphy.com/media/OAYtfrwCvdVjW/giphy.gif',
-  'https://media.giphy.com/media/5HRvXqKEVrZEA/giphy.gif',
-  'https://media.giphy.com/media/26gsspfbt1HfVQ9va/giphy.gif',
-  'https://media.giphy.com/media/KPgOYtIRnFOOk/giphy.gif'
-]
+  "https://media.giphy.com/media/dZCa79nBsVDU1sWwbm/giphy.gif",
+  "https://media.giphy.com/media/OAYtfrwCvdVjW/giphy.gif",
+  "https://media.giphy.com/media/5HRvXqKEVrZEA/giphy.gif",
+  "https://media.giphy.com/media/26gsspfbt1HfVQ9va/giphy.gif",
+  "https://media.giphy.com/media/KPgOYtIRnFOOk/giphy.gif",
+];
 
 const App = () => {
   //State
   const [walletAddress, setWalletAddress] = useState(null);
+  const [inputValue, setInputValue] = useState('');
+  const [gifList, setGifList] = useState([]);
 
   // Actions
   const checkWalletConnect = async () => {
@@ -24,10 +27,10 @@ const App = () => {
 
       if (solana) {
         if (solana.isPhantom) {
-          console.log('Phantom wallet found!');
-          const response = await solana.connect({ onlyIfTrusted: true});
+          console.log("Phantom wallet found!");
+          const response = await solana.connect({ onlyIfTrusted: true });
           console.log(
-            'Connected with Public Key:',
+            "Connected with Public Key:",
             response.publicKey.toString()
           );
 
@@ -35,7 +38,7 @@ const App = () => {
           setWalletAddress(response.publicKey.toString());
         }
       } else {
-        alert('Solana object not found! Get a Phantom Wallet 👻');
+        alert("Solana object not found! Get a Phantom Wallet 👻");
       }
     } catch (error) {
       console.error(error);
@@ -47,26 +50,55 @@ const App = () => {
 
     if (solana) {
       const response = await solana.connect();
-      console.log('Connected with Public Key:', response.publicKey.toString());
+      console.log("Connected with Public Key:", response.publicKey.toString());
       setWalletAddress(response.publicKey.toString());
     }
+  };
+
+  const sendGif = async () => {
+    if (inputValue.length > 0) {
+      console.log('Gif link:', inputValue);
+      setGifList([...gifList, inputValue]);
+      setInputValue('');
+    } else {
+      console.log('Empy input. Try again.');
+    }
+  };
+
+  const onInputChange = (event) => {
+    const { value } = event.target;
+    setInputValue(value);
   };
 
   // We want to render the UI when user hasn't connected yet
 
   const renderNotConnectedContainer = () => (
-    <button className="cta-button connect-wallet-button" onClick={connectWallet}>
+    <button
+      className="cta-button connect-wallet-button"
+      onClick={connectWallet}
+    >
       Connect to Wallet
     </button>
   );
 
   const renderConnectedContainer = () => (
     <div className="connected-container">
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          sendGif();
+        }}
+      >
+        <input type="text" placeholder="Enter your gorilla gif link!" value={inputValue} onChange={onInputChange} />
+        <button type="submit" className="cta-button submit-gif-button">
+          Submit
+        </button>
+      </form>
       <div className="gif-grid">
-        {TEST_GIFS.map(gif => (
+        {gifList.map((gif) => (
           <div className="gif-item" key={gif}>
             <img src={gif} alt={gif} />
-            </div>
+          </div>
         ))}
       </div>
     </div>
@@ -77,17 +109,29 @@ const App = () => {
     const onLoad = async () => {
       await checkWalletConnect();
     };
-    window.addEventListener('load', onLoad);
-    return() => window.removeEventListener('load', onLoad);
+    window.addEventListener("load", onLoad);
+    return () => window.removeEventListener("load", onLoad);
   }, []);
+
+  useEffect(() => {
+    if (walletAddress) {
+      console.log('Fetching GIF list...');
+
+      // CALL SOLANA PROGRAM HERE
+
+      // Set state
+      setGifList(TEST_GIFS);
+    }
+  }, [walletAddress]);
 
   return (
     <div className="App">
-      <div className={walletAddress ? 'authed-container' : 'container'}>
+      <div className={walletAddress ? "authed-container" : "container"}>
         <div className="header-container">
           <p className="header">Koko's Guerilla Art GIF Portal</p>
           <p className="sub-text">
-            View the world's pre-eminent geurilla art GIFs straight from the metaverse ✨
+            View the world's pre-eminent geurilla art GIFs straight from the
+            metaverse ✨
           </p>
           {!walletAddress && renderNotConnectedContainer()}
           {walletAddress && renderConnectedContainer()}
