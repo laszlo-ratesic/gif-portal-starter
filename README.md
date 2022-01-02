@@ -1,6 +1,6 @@
-# buildspace Solana GIF Portal Project
+# buildspace Solana project
 
-### **Welcome 👋**
+### **Welcome 👋 to Koko's Guerilla Art Gallery!**
 To get started with this course, clone this repo and follow these commands:
 
 1. Run `npm install` at the root of your directory
