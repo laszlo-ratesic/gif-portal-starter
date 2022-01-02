@@ -5,6 +5,13 @@ import './App.css';
 // Constants
 const TWITTER_HANDLE = 'laszlo_ratesic';
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
+const TEST_GIFS = [
+  'https://media.giphy.com/media/dZCa79nBsVDU1sWwbm/giphy.gif',
+  'https://media.giphy.com/media/OAYtfrwCvdVjW/giphy.gif',
+  'https://media.giphy.com/media/5HRvXqKEVrZEA/giphy.gif',
+  'https://media.giphy.com/media/26gsspfbt1HfVQ9va/giphy.gif',
+  'https://media.giphy.com/media/KPgOYtIRnFOOk/giphy.gif'
+]
 
 const App = () => {
   //State
@@ -53,6 +60,18 @@ const App = () => {
     </button>
   );
 
+  const renderConnectedContainer = () => (
+    <div className="connected-container">
+      <div className="gif-grid">
+        {TEST_GIFS.map(gif => (
+          <div className="gif-item" key={gif}>
+            <img src={gif} alt={gif} />
+            </div>
+        ))}
+      </div>
+    </div>
+  );
+
   // UseEffects
   useEffect(() => {
     const onLoad = async () => {
@@ -71,6 +90,7 @@ const App = () => {
             View the world's pre-eminent geurilla art GIFs straight from the metaverse ✨
           </p>
           {!walletAddress && renderNotConnectedContainer()}
+          {walletAddress && renderConnectedContainer()}
         </div>
         <div className="footer-container">
           <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
