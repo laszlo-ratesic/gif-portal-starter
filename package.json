@@ -1,6 +1,6 @@
 {
-  "homepage": "https://laszlo-ratesic.github.io/koko-art-gallery",
   "name": "buildspace-solana",
+  "homepage": "https://laszlo-ratesic.github.io/koko-art-gallery",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
